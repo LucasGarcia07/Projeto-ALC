@@ -12,7 +12,7 @@ reader = csv.reader(open("vetor.csv", "r"))
 x = list(reader)
 vetorB = np.array(x).astype("float")
 
-#substituição para frente
+#substituição para frente  -> matriz triangular inferior
 def substituiFrente(A,b):
     n = np.shape(b)[0]
     x = np.zeros(n)
@@ -21,6 +21,7 @@ def substituiFrente(A,b):
         x[i] = ((b[i] - np.dot(A[i][0:i], x[0:i]))/A[i][i])
     return x
 
+#substituição para trás -> matriz triangular superior
 def substituiTras(A, b):
     n = np.shape(b)[0]
     x = np.zeros(n)
@@ -29,19 +30,19 @@ def substituiTras(A, b):
     return x
 
 #fatoração LU
-def fatoraLU(A):
+def fatoraLU(A, b):
     U = np.copy(A)
     n = np.shape(U)[0]
     L = np.eye(n)
-    for j in np.arange(n-1):
-        for i in np.arange(j+1,n):
+    for j in range(n-1):
+        for i in range(j+1,n):
             L[i,j] = U[i,j]/U[j,j]
-            for k in np.arange(j+1,n):
+            for k in range(j+1,n):
                 U[i,k] = U[i,k] - L[i,j]*U[j,k]
             U[i,j] = 0
-    return L, U
-
-print(substituiTras(matrixA, vetorB))
+    y = substituiFrente(L, b)
+    x = substituiTras(U, y)
+    return x
 
 
 
