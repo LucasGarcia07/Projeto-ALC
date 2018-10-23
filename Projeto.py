@@ -2,15 +2,31 @@ import csv
 import numpy as np
 import pandas as pd
 
+#pegar a matriz do banco de dados
 reader = csv.reader(open("matriz.csv", "r"), delimiter=",")
 x = list(reader)
 matrixA = np.array(x).astype("float")
 
-print(matrixA[:][0])
+#pegar o vetor do banco de dados
+reader = csv.reader(open("vetor.csv", "r"))
+x = list(reader)
+vetorB = np.array(x).astype("float")
 
+#substituição para frente
+def substituiFrente(A,b):
+    n = np.shape(b)[0]
+    x = np.zeros(n)
+    x[0] = b[0]/A[0][0]
+    for i in range(1,n):
+        x[i] = ((b[i] - np.dot(A[i][0:i], x[0:i]))/A[i][i])
+    return x
 
-
-
+def substituiTras(A, b):
+    n = np.shape(b)[0]
+    x = np.zeros(n)
+    for i in range(n-1, -1, -1):
+       x[i] = (b[i] - np.dot(A[i, i + 0:n], x[i + 0:n]))/A[i, i]
+    return x
 
 #fatoração LU
 def fatoraLU(A):
@@ -25,7 +41,9 @@ def fatoraLU(A):
             U[i,j] = 0
     return L, U
 
-print(fatoraLU(matrixA))
+print(substituiTras(matrixA, vetorB))
+
+
 
 
 
