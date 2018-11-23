@@ -1,10 +1,10 @@
-import csv
 import numpy as np
-import pandas as pd
 
-reader = csv.reader(open("teste.csv", "r"), delimiter=",")
-x = list(reader)
-matrizA = np.array(x).astype("float")
+Vetor = [120, 100, 70, 69]
+dif = [0,0,0]
+for i in range(3):
+    dif[i] = Vetor[i] - Vetor[i+1]
 
-print(result[:][0])
-
+for i in range(2):
+    if(dif[i]> 5*dif[i+1]):
+        print("para")
